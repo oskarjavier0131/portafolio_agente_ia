@@ -1,0 +1,23 @@
+mi_portafolio/
+├── manage.py
+├── core/                    # Settings y configs
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── portfolio/              # App principal del portafolio
+│   ├── models.py          # Proyectos, Skills, Experiencia
+│   ├── views.py           # Vistas del portafolio
+│   ├── urls.py
+│   └── templates/
+├── ai_agent/              # App del agente IA
+│   ├── models.py          # ChatSession, Messages
+│   ├── views.py           # API endpoints para chat
+│   ├── services.py        # Integración Claude API
+│   ├── consumers.py       # WebSocket consumer
+│   └── urls.py
+├── static/
+│   ├── css/
+│   ├── js/
+│   └── images/
+│       └── tu-foto.jpg
+└── requirements.txt
