@@ -1,0 +1,213 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}{{ project.title }} - Mi Portafolio{% endblock %}
+
+{% block content %}
+<!-- Project Hero -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'portfolio:home' %}">Inicio</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'portfolio:projects' %}">Proyectos</a>
+                        </li>
+                        <li class="breadcrumb-item active">{{ project.title }}</li>
+                    </ol>
+                </nav>
+                
+                {% if project.featured %}
+                <span class="badge bg-warning text-dark mb-3">
+                    <i class="fas fa-star me-1"></i>Proyecto Destacado
+                </span>
+                {% endif %}
+                
+                <h1 class="display-5 fw-bold mb-4">{{ project.title }}</h1>
+                <p class="lead text-muted mb-4">{{ project.short_description }}</p>
+                
+                <!-- Links de acción -->
+                <div class="d-flex gap-3 mb-4">
+                    {% if project.github_url %}
+                    <a href="{{ project.github_url }}" 
+                       target="_blank" 
+                       class="btn btn-dark">
+                        <i class="fab fa-github me-2"></i>Ver Código
+                    </a>
+                    {% endif %}
+                    
+                    {% if project.live_url %}
+                    <a href="{{ project.live_url }}" 
+                       target="_blank" 
+                       class="btn btn-success">
+                        <i class="fas fa-external-link-alt me-2"></i>Ver Demo
+                    </a>
+                    {% endif %}
+                </div>
+                
+                <!-- Información del proyecto -->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h6 class="text-muted mb-2">Fecha de Creación</h6>
+                        <p class="mb-3">
+                            <i class="fas fa-calendar me-2 text-primary"></i>
+                            {{ project.created_date|date:"d F Y" }}
+                        </p>
+                    </div>
+                    <div class="col-sm-6">
+                        <h6 class="text-muted mb-2">Estado</h6>
+                        <p class="mb-3">
+                            <i class="fas fa-check-circle me-2 text-success"></i>
+                            Completado
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                {% if project.image %}
+                <img src="{{ project.image.url }}" 
+                     alt="{{ project.title }}" 
+                     class="img-fluid rounded shadow-lg">
+                {% else %}
+                <!-- Placeholder mockup -->
+                <div class="bg-gradient-primary rounded shadow-lg p-5 text-center text-white">
+                    <i class="fas fa-code fa-5x mb-3"></i>
+                    <h4>{{ project.title }}</h4>
+                    <p>Vista previa del proyecto</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tecnologías Utilizadas -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="mb-4">Tecnologías Utilizadas</h2>
+        <div class="row">
+            {% for tech in project.technologies.all %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                <div class="card border-0 bg-light h-100">
+                    <div class="card-body text-center">
+                        {% if tech.icon %}
+                        <i class="{{ tech.icon }} fa-2x text-primary mb-3"></i>
+                        {% endif %}
+                        <h6 class="card-title">{{ tech.name }}</h6>
+                        <div class="progress mt-2" style="height: 4px;">
+                            <div class="progress-bar" 
+                                 style="width: {{ tech.proficiency }}%">
+                            </div>
+                        </div>
+                        <small class="text-muted">{{ tech.proficiency }}% dominio</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Descripción Detallada -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="mb-4">Descripción del Proyecto</h2>
+                <div class="content">
+                    {{ project.description|linebreaks }}
+                </div>
+                
+                <!-- Características principales -->
+                <h3 class="mt-5 mb-4">Características Principales</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Diseño Responsivo
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Optimización SEO
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                API REST Integrada
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Seguridad Avanzada
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Panel Administrativo
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Documentación Completa
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Proyectos Relacionados -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Otros Proyectos</h2>
+        <div class="row">
+            <!-- Obtener proyectos relacionados (excluyendo el actual) -->
+            {% for related_project in projects %}
+                {% if related_project.pk != project.pk %}
+                <div class="col-lg-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        {% if related_project.image %}
+                        <img src="{{ related_project.image.url }}" 
+                             class="card-img-top" 
+                             alt="{{ related_project.title }}"
+                             style="height: 150px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body">
+                            <h6 class="card-title">{{ related_project.title }}</h6>
+                            <p class="card-text text-muted small">
+                                {{ related_project.short_description|truncatechars:80 }}
+                            </p>
+                            <a href="{% url 'portfolio:project_detail' related_project.pk %}" 
+                               class="btn btn-outline-primary btn-sm">
+                                Ver Proyecto
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-5 bg-primary text-white text-center">
+    <div class="container">
+        <h3 class="mb-4">¿Te interesa un proyecto similar?</h3>
+        <p class="lead mb-4">
+            Puedo desarrollar algo parecido y personalizado para tus necesidades específicas.
+        </p>
+        <a href="{% url 'portfolio:contact' %}" class="btn btn-warning btn-lg">
+            <i class="fas fa-paper-plane me-2"></i>Solicitar Cotización
+        </a>
+    </div>
+</section>
+{% endblock %}

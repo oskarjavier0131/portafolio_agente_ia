@@ -1,0 +1,202 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}Proyectos - Mi Portafolio{% endblock %}
+
+{% block content %}
+<!-- Projects Hero -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-4">Mis Proyectos</h1>
+        <p class="lead">
+            Una colección de proyectos que demuestran mis habilidades y experiencia 
+            en desarrollo web y programación.
+        </p>
+    </div>
+</section>
+
+<!-- Filtros -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h5 class="mb-3">Filtrar por tecnología:</h5>
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="btn btn-outline-primary active" data-filter="all">
+                        Todos
+                    </button>
+                    <button class="btn btn-outline-primary" data-filter="python">
+                        Python
+                    </button>
+                    <button class="btn btn-outline-primary" data-filter="django">
+                        Django
+                    </button>
+                    <button class="btn btn-outline-primary" data-filter="javascript">
+                        JavaScript
+                    </button>
+                    <button class="btn btn-outline-primary" data-filter="api">
+                        API REST
+                    </button>
+                    <button class="btn btn-outline-primary" data-filter="database">
+                        Base de Datos
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Grid de Proyectos -->
+<section class="py-5">
+    <div class="container">
+        <div class="row" id="projects-grid">
+            {% for project in projects %}
+            <div class="col-lg-4 col-md-6 mb-4 project-card" 
+                 data-technologies="{% for tech in project.technologies.all %}{{ tech.name|lower }} {% endfor %}">
+                <div class="card shadow-sm h-100">
+                    {% if project.image %}
+                    <img src="{{ project.image.url }}" 
+                         class="card-img-top" 
+                         alt="{{ project.title }}"
+                         style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <!-- Placeholder si no hay imagen -->
+                    <div class="card-img-top bg-gradient-primary d-flex align-items-center justify-content-center" 
+                         style="height: 200px;">
+                        <i class="fas fa-code fa-3x text-white"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="card-body d-flex flex-column">
+                        <!-- Badge para proyectos destacados -->
+                        {% if project.featured %}
+                        <span class="badge bg-warning text-dark position-absolute" 
+                              style="top: 10px; left: 10px;">
+                            <i class="fas fa-star me-1"></i>Destacado
+                        </span>
+                        {% endif %}
+                        
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="card-text text-muted flex-grow-1">
+                            {{ project.short_description }}
+                        </p>
+                        
+                        <!-- Tecnologías -->
+                        <div class="mb-3">
+                            {% for tech in project.technologies.all %}
+                            <span class="badge bg-light text-dark me-1 mb-1 border">
+                                {{ tech.name }}
+                            </span>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Links y botones -->
+                        <div class="mt-auto">
+                            <div class="d-flex gap-2 mb-3">
+                                {% if project.github_url %}
+                                <a href="{{ project.github_url }}" 
+                                   target="_blank" 
+                                   class="btn btn-outline-dark btn-sm flex-fill">
+                                    <i class="fab fa-github me-1"></i>Código
+                                </a>
+                                {% endif %}
+                                
+                                {% if project.live_url %}
+                                <a href="{{ project.live_url }}" 
+                                   target="_blank" 
+                                   class="btn btn-outline-success btn-sm flex-fill">
+                                    <i class="fas fa-external-link-alt me-1"></i>Demo
+                                </a>
+                                {% endif %}
+                            </div>
+                            
+                            <a href="{% url 'portfolio:project_detail' project.pk %}" 
+                               class="btn btn-primary w-100">
+                                <i class="fas fa-info-circle me-1"></i>Ver Detalles
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer con fecha -->
+                    <div class="card-footer bg-transparent border-top-0">
+                        <small class="text-muted">
+                            <i class="fas fa-calendar me-1"></i>
+                            {{ project.created_date|date:"M Y" }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No hay proyectos aún</h4>
+                <p class="text-muted">Próximamente agregaré más proyectos increíbles.</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Mensaje cuando no hay resultados del filtro -->
+        <div id="no-results" class="text-center py-5" style="display: none;">
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">No se encontraron proyectos</h4>
+            <p class="text-muted">Intenta con otro filtro de tecnología.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-dark text-white text-center">
+    <div class="container">
+        <h3 class="mb-4">¿Te gustó algún proyecto?</h3>
+        <p class="lead mb-4">
+            Puedo crear algo similar o mejor para tu negocio. 
+            Hablemos sobre tu próximo proyecto.
+        </p>
+        <a href="{% url 'portfolio:contact' %}" class="btn btn-warning btn-lg">
+            <i class="fas fa-handshake me-2"></i>Trabajemos Juntos
+        </a>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// JavaScript para filtros de proyectos
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('[data-filter]');
+    const projectCards = document.querySelectorAll('.project-card');
+    const noResults = document.getElementById('no-results');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            // Actualizar botones activos
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filtrar proyectos
+            let visibleCount = 0;
+            
+            projectCards.forEach(card => {
+                const technologies = card.getAttribute('data-technologies').toLowerCase();
+                
+                if (filter === 'all' || technologies.includes(filter)) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Mostrar mensaje si no hay resultados
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

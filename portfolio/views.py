@@ -40,21 +40,42 @@ def projects(request):
 def project_detail(request, pk):
     """Detalle de un proyecto específico"""
     project = get_object_or_404(Project, pk=pk)
-    context = {'project': project}
+    
+    # Obtener otros proyectos para mostrar como relacionados
+    related_projects = Project.objects.exclude(pk=pk)[:3]
+    
+    context = {
+        'project': project,
+        'projects': related_projects,  # Para proyectos relacionados
+    }
     return render(request, 'portfolio/project_detail.html', context)
-
+    
 def contact(request):
     """Página de contacto"""
     if request.method == 'POST':
-        # Procesar formulario de contacto
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        message = request.POST.get('message')
+        name = request.POST.get('name', '').strip()
+        email = request.POST.get('email', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        company = request.POST.get('company', '').strip()
+        subject = request.POST.get('subject', '').strip()
+        message = request.POST.get('message', '').strip()
         
-        # Aquí después agregaremos envío de email
-        # Por ahora solo retornamos success
+        # Validación básica
+        if not all([name, email, subject, message]):
+            return JsonResponse({'success': False, 'error': 'Campos requeridos faltantes'})
+        
+        # Aquí puedes agregar envío de email, guardar en DB, etc.
+        # Por ahora solo simulamos éxito
+        
+        # TODO: Implementar envío de email
+        # send_mail(
+        #     subject=f'Contacto: {subject}',
+        #     message=f'De: {name} ({email})\n\n{message}',
+        #     from_email=settings.DEFAULT_FROM_EMAIL,
+        #     recipient_list=['tu@email.com'],
+        # )
+        
         return JsonResponse({'success': True})
     
     return render(request, 'portfolio/contact.html')
-
-# Create your views here.
+    

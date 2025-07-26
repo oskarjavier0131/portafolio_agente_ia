@@ -1,0 +1,390 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}Contacto - Mi Portafolio{% endblock %}
+
+{% block content %}
+<!-- Contact Hero -->
+<section class="py-5 bg-gradient-primary text-white">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-4">Contacto</h1>
+        <p class="lead">
+            ¿Tienes un proyecto en mente? ¡Hablemos y hagámoslo realidad!
+        </p>
+    </div>
+</section>
+
+<!-- Contact Form & Info -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Formulario de Contacto -->
+            <div class="col-lg-8 mb-5">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-5">
+                        <h3 class="mb-4">Envíame un Mensaje</h3>
+                        
+                        <!-- Mensajes de estado -->
+                        <div id="form-messages"></div>
+                        
+                        <form id="contact-form" method="post" novalidate>
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label">
+                                        Nombre Completo <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="name" 
+                                           name="name" 
+                                           required>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">
+                                        Email <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="email" 
+                                           class="form-control" 
+                                           id="email" 
+                                           name="email" 
+                                           required>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Teléfono</label>
+                                    <input type="tel" 
+                                           class="form-control" 
+                                           id="phone" 
+                                           name="phone">
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="company" class="form-label">Empresa</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="company" 
+                                           name="company">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">
+                                    Asunto <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-select" id="subject" name="subject" required>
+                                    <option value="">Selecciona un asunto</option>
+                                    <option value="proyecto_web">Desarrollo Web</option>
+                                    <option value="api_desarrollo">Desarrollo de API</option>
+                                    <option value="agente_ia">Agente con IA</option>
+                                    <option value="consultoria">Consultoría Técnica</option>
+                                    <option value="mantenimiento">Mantenimiento</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="message" class="form-label">
+                                    Mensaje <span class="text-danger">*</span>
+                                </label>
+                                <textarea class="form-control" 
+                                          id="message" 
+                                          name="message" 
+                                          rows="5" 
+                                          placeholder="Cuéntame sobre tu proyecto, presupuesto estimado, timeline, etc."
+                                          required></textarea>
+                                <div class="invalid-feedback"></div>
+                                <div class="form-text">
+                                    Entre más detalles, mejor puedo ayudarte.
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" 
+                                           type="checkbox" 
+                                           id="privacy" 
+                                           name="privacy" 
+                                           required>
+                                    <label class="form-check-label" for="privacy">
+                                        Acepto el tratamiento de mis datos personales
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-paper-plane me-2"></i>
+                                    Enviar Mensaje
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Información de Contacto -->
+            <div class="col-lg-4">
+                <!-- Información Personal -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-user me-2 text-primary"></i>
+                            Información de Contacto
+                        </h5>
+                        
+                        <div class="mb-3">
+                            <strong>Email:</strong><br>
+                            <a href="mailto:tu@email.com" class="text-decoration-none">
+                                tu@email.com
+                            </a>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <strong>Teléfono:</strong><br>
+                            <a href="tel:+57123456789" class="text-decoration-none">
+                                +57 123 456 789
+                            </a>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <strong>Ubicación:</strong><br>
+                            Bogotá, Colombia
+                        </div>
+                        
+                        <div>
+                            <strong>Disponibilidad:</strong><br>
+                            <span class="badge bg-success">
+                                <i class="fas fa-circle me-1"></i>Disponible
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Redes Sociales -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-share-alt me-2 text-primary"></i>
+                            Sígueme
+                        </h5>
+                        
+                        <div class="d-flex gap-3">
+                            <a href="https://github.com/tuusuario" 
+                               target="_blank" 
+                               class="btn btn-outline-dark btn-sm">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="https://linkedin.com/in/tuusuario" 
+                               target="_blank" 
+                               class="btn btn-outline-primary btn-sm">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="https://twitter.com/tuusuario" 
+                               target="_blank" 
+                               class="btn btn-outline-info btn-sm">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tiempo de Respuesta -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-clock me-2 text-primary"></i>
+                            Tiempo de Respuesta
+                        </h5>
+                        <p class="card-text">
+                            Usualmente respondo en <strong>24 horas</strong> o menos.
+                            Para proyectos urgentes, menciona la fecha límite en tu mensaje.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Preguntas Frecuentes</h2>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                ¿Cuánto tiempo toma desarrollar un proyecto?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Depende de la complejidad. Una página web simple toma 1-2 semanas, 
+                                una aplicación completa puede tomar 1-3 meses. Siempre establezco 
+                                timeline claros antes de empezar.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                ¿Qué incluye el servicio de desarrollo?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Desarrollo completo, diseño responsivo, optimización SEO, 
+                                documentación, capacitación básica y 1 mes de soporte post-lanzamiento.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                ¿Trabajas con presupuestos pequeños?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Sí, tengo opciones para diferentes presupuestos. Podemos ajustar 
+                                el alcance del proyecto para que se adapte a tus necesidades.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Contact form handling
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Reset previous validation
+    clearValidation();
+    
+    // Validate form
+    if (!validateForm()) {
+        return;
+    }
+    
+    // Show loading state
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Enviando...';
+    submitBtn.disabled = true;
+    
+    // Prepare form data
+    const formData = new FormData(this);
+    
+    // Submit form
+    fetch(this.action || window.location.href, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showMessage('¡Mensaje enviado con éxito! Te responderé pronto.', 'success');
+            this.reset();
+        } else {
+            showMessage('Error al enviar el mensaje. Intenta de nuevo.', 'error');
+        }
+    })
+    .catch(error => {
+        showMessage('Error de conexión. Verifica tu internet.', 'error');
+    })
+    .finally(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    });
+});
+
+function validateForm() {
+    const form = document.getElementById('contact-form');
+    const requiredFields = ['name', 'email', 'subject', 'message', 'privacy'];
+    let isValid = true;
+    
+    requiredFields.forEach(fieldName => {
+        const field = form.querySelector(`[name="${fieldName}"]`);
+        const value = field.type === 'checkbox' ? field.checked : field.value.trim();
+        
+        if (!value) {
+            showFieldError(field, 'Este campo es requerido');
+            isValid = false;
+        } else if (fieldName === 'email' && !isValidEmail(value)) {
+            showFieldError(field, 'Email inválido');
+            isValid = false;
+        }
+    });
+    
+    return isValid;
+}
+
+function showFieldError(field, message) {
+    field.classList.add('is-invalid');
+    const feedback = field.nextElementSibling;
+    if (feedback && feedback.classList.contains('invalid-feedback')) {
+        feedback.textContent = message;
+    }
+}
+
+function clearValidation() {
+    document.querySelectorAll('.is-invalid').forEach(field => {
+        field.classList.remove('is-invalid');
+    });
+}
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function showMessage(message, type) {
+    const messagesDiv = document.getElementById('form-messages');
+    messagesDiv.innerHTML = `
+        <div class="alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    `;
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{% endblock %}

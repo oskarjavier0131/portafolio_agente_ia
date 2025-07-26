@@ -1,0 +1,56 @@
+[
+  {
+    "model": "portfolio.skill",
+    "pk": 1,
+    "fields": {
+      "name": "Python",
+      "skill_type": "backend",
+      "proficiency": 90,
+      "icon": "fab fa-python"
+    }
+  },
+  {
+    "model": "portfolio.skill",
+    "pk": 2,
+    "fields": {
+      "name": "Django",
+      "skill_type": "backend", 
+      "proficiency": 85,
+      "icon": "fas fa-code"
+    }
+  },
+  {
+    "model": "portfolio.skill",
+    "pk": 3,
+    "fields": {
+      "name": "JavaScript",
+      "skill_type": "frontend",
+      "proficiency": 80,
+      "icon": "fab fa-js-square"
+    }
+  },
+  {
+    "model": "portfolio.skill",
+    "pk": 4,
+    "fields": {
+      "name": "PostgreSQL",
+      "skill_type": "database",
+      "proficiency": 75,
+      "icon": "fas fa-database"
+    }
+  },
+  {
+    "model": "portfolio.project",
+    "pk": 1,
+    "fields": {
+      "title": "Sistema de Gestión Web",
+      "description": "Aplicación web completa desarrollada en Django con sistema de usuarios, dashboard administrativo y API REST.",
+      "short_description": "Sistema web completo con Django y PostgreSQL",
+      "github_url": "https://github.com/tuusuario/proyecto1",
+      "live_url": "https://proyecto1.herokuapp.com",
+      "featured": true,
+      "created_date": "2024-01-15T10:00:00Z",
+      "technologies": [1, 2, 4]
+    }
+  }
+]
