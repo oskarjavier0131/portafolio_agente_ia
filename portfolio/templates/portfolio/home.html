@@ -1,0 +1,102 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}Inicio - Mi Portafolio{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    ¡Hola! Soy <span class="text-warning">TuNombre</span>
+                </h1>
+                <p class="lead mb-4">
+                    Desarrollador Full Stack especializado en Django y Python. 
+                    Creando soluciones web innovadoras con inteligencia artificial.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="{% url 'portfolio:projects' %}" class="btn btn-warning btn-lg">
+                        Ver Proyectos
+                    </a>
+                    <a href="{% url 'portfolio:contact' %}" class="btn btn-outline-light btn-lg">
+                        Contactar
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="{% static 'images/tu-foto.jpg' %}" 
+                     alt="Tu Foto" 
+                     class="img-fluid rounded-circle shadow-lg"
+                     style="max-width: 300px;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Tecnologías que Domino</h2>
+        <div class="row">
+            {% for skill in skills %}
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="text-center">
+                    {% if skill.icon %}
+                    <i class="{{ skill.icon }} fa-3x text-primary mb-3"></i>
+                    {% endif %}
+                    <h5>{{ skill.name }}</h5>
+                    <div class="progress">
+                        <div class="progress-bar" 
+                             style="width: {{ skill.proficiency }}%">
+                            {{ skill.proficiency }}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Projects -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Proyectos Destacados</h2>
+        <div class="row">
+            {% for project in featured_projects %}
+            <div class="col-lg-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    {% if project.image %}
+                    <img src="{{ project.image.url }}" 
+                         class="card-img-top" 
+                         alt="{{ project.title }}"
+                         style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="card-text">{{ project.short_description }}</p>
+                        <div class="mb-3">
+                            {% for tech in project.technologies.all %}
+                            <span class="badge bg-secondary me-1">{{ tech.name }}</span>
+                            {% endfor %}
+                        </div>
+                        <a href="{% url 'portfolio:project_detail' project.pk %}" 
+                           class="btn btn-primary">
+                            Ver Detalles
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'portfolio:projects' %}" class="btn btn-outline-primary btn-lg">
+                Ver Todos los Proyectos
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
